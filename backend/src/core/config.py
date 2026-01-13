@@ -8,7 +8,8 @@ def load_environment() -> Dict[str, str]:
     
     required_vars = {
         'CEREBRAS_API_KEY' : 'Cerebas Api key',
-        'NVIDIA_API_KEY':'Nvidia NIM key'
+        'NVIDIA_API_KEY':'Nvidia NIM key',
+        'DATABASE_URL':'DataBase URL'
     }
 
     config = {}
