@@ -2,8 +2,10 @@ from sqlalchemy import Column , String , DateTime , Float
 from sqlalchemy.sql import func
 import uuid
 
-from src.core.database import base
+from backend.src.core.database import get_db_base
 
+
+base = get_db_base()
 
 # pretty simple db with one table (for now)
 class Asset(base):
