@@ -21,6 +21,7 @@ def init_db():
         Asset(
             name="MacBook Pro M3",
             category="Electronics",
+            quantity=2.0,
             value=2500.0,
             status="In Use",
             purchase_date=datetime(2025, 1, 15)
@@ -29,6 +30,7 @@ def init_db():
             name="Herman Miller Chair",
             category="Furniture",
             value=1200.0,
+            quantity=1.0,
             status="In Use",
             purchase_date=datetime(2024, 11, 20)
         ),
@@ -36,6 +38,7 @@ def init_db():
             name="Dell UltraSharp Monitor",
             category="Electronics",
             value=600.0,
+            quantity=1.0,
             status="Maintenance",
             purchase_date=datetime(2024, 8, 5)
         ),
@@ -43,6 +46,7 @@ def init_db():
             name="NVIDIA H100 GPU",
             category="Hardware",
             value=30000.0,
+            quantity=1.0,
             status="Reserved",
             purchase_date=datetime(2025, 2, 1)
         )
