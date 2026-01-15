@@ -16,6 +16,7 @@ class Asset(base):
     name = Column(String , index=True)
     category = Column(String)
     value = Column(Float)
+    quantity = Column(Float , default = 1.0)
     status = Column(String)
     purchase_date = Column(DateTime , nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
