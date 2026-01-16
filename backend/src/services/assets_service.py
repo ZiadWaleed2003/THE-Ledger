@@ -36,12 +36,12 @@ class AssetService:
             self.db.commit()
             self.db.refresh(asset)
             self.logger.info("Logged an asset record to the DB")
-            return asset
+            return asset, None
         
         except Exception as e:
-            self.logger.error("couldn't log the asset to the DB ... error happened while inserting the asset to the DB")
+            self.logger.error(f"couldn't log the asset to the DB ... error: {e}")
             self.db.rollback()
-            return False
+            return None, str(e)
 
 
     def get_asset_by_id(self, asset_id):
@@ -51,13 +51,13 @@ class AssetService:
 
             if asset is None:
                 self.logger.warning(f"Asset with ID {asset_id} not found")
-                return None
+                return None, "Asset not found"
             
             self.logger.info("retrieving an Asset record from the DB")
-            return asset
+            return asset, None
         except Exception as e:
             self.logger.error(f"DB Error: {e}")
-            return None
+            return None, str(e)
         
 
     def get_all_assets(self, skip = 0, limit = 100):
@@ -68,25 +68,24 @@ class AssetService:
 
             if not assets:
                 self.logger.warning("No Assets found in the DB")
-                return []
+                return [] , None
 
             self.logger.info("retrieving Assets from the DB")
-            return assets
+            return assets, None
         
         except Exception as e:
             self.logger.error(f"DB Error: {e}")
-            return None
+            return None, str(e)
         
 
-    def update_asset(self, asset_update : AssetUpdate ,asset_id)-> bool:
+    def update_asset(self, asset_update : AssetUpdate ,asset_id):
 
         # get the the asset to update
-        db_asset = self.get_asset_by_id(asset_id)
+        db_asset, error = self.get_asset_by_id(asset_id)
 
         # check if we actually got somehting
-        if db_asset is None:
-            self.logger.error("couldn't find any asset to update")
-            return False
+        if error:
+            return None, error
         
         # now let's update it
         try:
@@ -99,32 +98,30 @@ class AssetService:
             # commit if we did it but rollback if we didn't gang
             self.db.commit()
             self.db.refresh(db_asset)
-            return True
+            return db_asset, None
         except Exception as e:
             self.logger.error(f"DB Error while updating the DB {e}")
             self.db.rollback()
-            return False
+            return None, str(e)
 
 
-    def delete_asset(self, asset_id)-> bool:
+    def delete_asset(self, asset_id):
 
         # 1st let's get the asset record
+        asset, error = self.get_asset_by_id(asset_id)
 
-        asset = self.get_asset_by_id(asset_id)
-
-        if asset is None:
-            self.logger.error("couldn't find any asset to delete")
-            return False
+        if error:
+            return False, error
         
         # since we found it so let's delete it
         try:
             self.db.delete(asset)
             self.db.commit()
-            return True
+            return True, None
         
 
         except Exception as e:
             self.logger.error(f"DB Error while deleting asset with id {asset_id}")
             self.db.rollback()
-            return False
+            return False, str(e)
 

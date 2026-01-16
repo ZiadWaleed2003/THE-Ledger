@@ -12,7 +12,7 @@ def get_session_logger():
 
     # If logger already exists, return it
     if _logger_instance:
-        return _logger_instance, _session_id
+        return _logger_instance
     
     # unique Id for every session 
     _session_id = str(uuid.uuid4())
