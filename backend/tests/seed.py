@@ -1,4 +1,4 @@
-from ..src.core.database import get_db_base , get_db_session_factory_and_engine
+from ..src.core.database import get_db_base , get_db , engine
 from ..src.models.asset import Asset
 
 from datetime import datetime
@@ -6,7 +6,7 @@ from datetime import datetime
 def init_db():
     # 1. Create the Tables
     print("Creating database tables...")
-    db , engine = get_db_session_factory_and_engine()
+    db  = next(get_db())
     base = get_db_base()
     base.metadata.create_all(bind=engine)
 

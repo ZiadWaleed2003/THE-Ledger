@@ -12,7 +12,7 @@ class AssetService:
         self.db = db
         self.logger = logger
 
-    def create_asset(self, asset: AssetCreate)-> bool:
+    def create_asset(self, asset: AssetCreate):
 
         """
             basically a func to create an asset and try to log it into the db
@@ -36,7 +36,7 @@ class AssetService:
             self.db.commit()
             self.db.refresh(asset)
             self.logger.info("Logged an asset record to the DB")
-            return True
+            return asset
         
         except Exception as e:
             self.logger.error("couldn't log the asset to the DB ... error happened while inserting the asset to the DB")
