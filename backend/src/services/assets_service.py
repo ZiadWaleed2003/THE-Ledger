@@ -130,14 +130,21 @@ class AssetService:
         "a method to search for asset by its name or category"
 
         try:
-            self.db.query(Asset).filter(
+            result = self.db.query(Asset).filter(
                 or_(
                     Asset.name.ilike(f"%{query}%"),
                     Asset.category.ilike(f"%{query}%")
                 )
             ).all()
 
+            if not result:
+                self.logger.warning("No Assets found in the DB")
+                return [] , None
+            
+            self.logger.info(f"query : {query} returned smth")
+            return result , None
         except Exception as e:
-            return e
+            self.logger.error(f"DB error while querying it {e}")
+            return None , str(e)
 
 
