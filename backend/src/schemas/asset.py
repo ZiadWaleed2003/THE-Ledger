@@ -6,7 +6,7 @@ from datetime import datetime
 # a base schema
 class AssetBase(BaseModel):
 
-    name: str = Field(... , description="Name of the asset", examples="Ounce of Gold")
+    name: str = Field(... , description="Name of the asset", example="Ounce of Gold")
     category: str = Field(..., description="Category like Electronics, Furniture", example="Electronics")
     value: float = Field(..., gt=0, description="Monetary value", example=2500.0)
     quantity : float = Field(..., description="quantity of that asset" ,example=2.5)

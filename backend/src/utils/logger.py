@@ -3,10 +3,19 @@ import os
 import uuid
 import datetime
 
-def setup_session_logger():
+# Global singleton to store the logger instance
+_logger_instance = None
+_session_id = None
+
+def get_session_logger():
+    global _logger_instance, _session_id
+
+    # If logger already exists, return it
+    if _logger_instance:
+        return _logger_instance
     
     # unique Id for every session 
-    session_id = str(uuid.uuid4())
+    _session_id = str(uuid.uuid4())
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     
     
@@ -14,9 +23,9 @@ def setup_session_logger():
     os.makedirs(log_dir, exist_ok=True)
     
     # merging the 2 paths together
-    log_filename = os.path.join(log_dir, f"{timestamp}_{session_id}.log")
+    log_filename = os.path.join(log_dir, f"{timestamp}_{_session_id}.log")
 
-    logger = logging.getLogger(session_id)
+    logger = logging.getLogger(_session_id)
     logger.setLevel(logging.INFO)
     file_handler = logging.FileHandler(log_filename)
     
@@ -25,4 +34,6 @@ def setup_session_logger():
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
     
-    return logger, session_id
+    _logger_instance = logger
+
+    return _logger_instance
