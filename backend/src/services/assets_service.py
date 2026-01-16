@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 import uuid
 from datetime import datetime , timezone
 
@@ -124,4 +125,19 @@ class AssetService:
             self.logger.error(f"DB Error while deleting asset with id {asset_id}")
             self.db.rollback()
             return False, str(e)
+        
+    def search_asset(self , query : str):
+        "a method to search for asset by its name or category"
+
+        try:
+            self.db.query(Asset).filter(
+                or_(
+                    Asset.name.ilike(f"%{query}%"),
+                    Asset.category.ilike(f"%{query}%")
+                )
+            ).all()
+
+        except Exception as e:
+            return e
+
 
