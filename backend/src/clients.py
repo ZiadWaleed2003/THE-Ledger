@@ -4,7 +4,7 @@ from langchain_core.rate_limiters import InMemoryRateLimiter
 from functools import lru_cache
 
 
-from src.core.config import CONFIG
+from backend.src.core.config import CONFIG
 
 # a Nvidia NIM model client to power the agent
 @lru_cache(maxsize=None)
