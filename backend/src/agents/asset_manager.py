@@ -1,4 +1,11 @@
-from langchain.agents import create_agent
+from typing import Any
+from langchain.agents import create_agent , AgentState
+from langchain.agents.middleware import before_model
+from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.runtime import Runtime
+from langchain.messages import RemoveMessage
+from langgraph.graph.message import REMOVE_ALL_MESSAGES
+from langchain_core.runnables import RunnableConfig
 
 
 from backend.src.clients import get_nvidia_client
@@ -8,6 +15,7 @@ class AssetManager:
 
     def __init__(self):
         self.tools = [ask_db_manager]
+        self.mem_limit = [trim_messages]
         self.llm = get_nvidia_client()
         self.sys_prompt = self._sys_prompt()
         self.agent = self._create_agent()
@@ -44,6 +52,8 @@ class AssetManager:
             model= self.llm,
             system_prompt= self.sys_prompt,
             tools= self.tools,
+            middleware=self.mem_limit,
+            checkpointer=InMemorySaver()
 
         )
 
@@ -53,13 +63,38 @@ class AssetManager:
         "a method to invoke the agent and execute the user query"
 
         try:
+            config: RunnableConfig = {"configurable": {"thread_id": "1"}}
             result = self.agent.invoke(
-                {"messages": [{"role" : "user" , "content" : user_query}]}
+                {"messages": [{"role" : "user" , "content" : user_query}]},
+                config=config
             )
+
+           
             if result and "messages" in result:
                 answer = result["messages"][-1].content
                 return answer
             else:
                 return None
         except Exception as e:
+            print("damn shit happened")
             return None
+
+
+@before_model
+def trim_messages(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    """Keep only the last few messages to fit context window."""
+    messages = state["messages"]
+
+    if len(messages) <= 5:
+        return None  # No changes needed
+
+    first_msg = messages[0]
+    recent_messages = messages[-3:] if len(messages) % 2 == 0 else messages[-4:]
+    new_messages = [first_msg] + recent_messages
+
+    return {
+        "messages": [
+            RemoveMessage(id=REMOVE_ALL_MESSAGES),
+            *new_messages
+        ]
+    }

@@ -119,6 +119,6 @@ def ask_db_manager(query:str):
         Example: "Find my most expensive laptop" or "Total value of assets".
     """
 
-    return ""
+    return "macbook m1"
 
 
