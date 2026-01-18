@@ -9,6 +9,8 @@ from backend.src.utils.logger import get_session_logger
 
 db = get_db()
 
+# tools used by the DB manager
+
 @tool
 def search_assets_by_name_or_category(query:str):
     "" """
@@ -52,7 +54,7 @@ def get_all_assets():
     
     return result
 
-@tool
+
 
 @tool
 def get_asset_value_statistics(metric: Literal["max", "min", "mean"]):
@@ -108,5 +110,15 @@ def get_asset_value_statistics(metric: Literal["max", "min", "mean"]):
     }
 
     
+# tool used by the asset manager
+@tool
+def ask_db_manager(query:str):
+    """
+        Use this tool to ask the Database Manager questions about assets.
+        Pass the user's natural language query directly to this tool.
+        Example: "Find my most expensive laptop" or "Total value of assets".
+    """
+
+    return ""
 
 
