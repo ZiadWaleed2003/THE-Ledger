@@ -2,7 +2,7 @@ from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from langchain_cerebras import ChatCerebras
 from langchain_core.rate_limiters import InMemoryRateLimiter
 from functools import lru_cache
-
+from langsmith import Client as LangSmithClient
 
 from backend.src.core.config import CONFIG
 
@@ -57,7 +57,7 @@ def get_nvidia_client()-> ChatNVIDIA:
         print(f"ERROR initializing LLM: {str(e)} : Nvidia from Langchain")
         raise
 
-
+@lru_cache(maxsize=None)
 def get_asset_manager_client()-> ChatCerebras:
 
     print("--- Initializing LLM Client LLama 3 ---")
@@ -87,3 +87,10 @@ def get_asset_manager_client()-> ChatCerebras:
 
         print(f"ERROR initializing LLM: {str(e)} : Nvidia from Langchain")
         raise
+
+
+@lru_cache(maxsize=None)
+def get_langsmith_client() -> LangSmithClient:
+    """Initializes and returns a shared LangSmith Client instance."""
+    print("--- Initializing LangSmith Client ---")
+    return LangSmithClient()
