@@ -8,7 +8,7 @@ from langgraph.graph.message import REMOVE_ALL_MESSAGES
 from langchain_core.runnables import RunnableConfig
 
 
-from backend.src.clients import get_nvidia_client
+from backend.src.clients import get_asset_manager_client
 from backend.src.utils.tools.asset_manager_tools import ask_db_manager
 
 class AssetManager:
@@ -16,7 +16,7 @@ class AssetManager:
     def __init__(self):
         self.tools = [ask_db_manager]
         self.mem_limit = [trim_messages]
-        self.llm = get_nvidia_client()
+        self.llm = get_asset_manager_client()
         self.sys_prompt = self._sys_prompt()
         self.agent = self._create_agent()
 
