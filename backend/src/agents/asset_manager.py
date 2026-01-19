@@ -6,7 +6,7 @@ from langgraph.runtime import Runtime
 from langchain.messages import RemoveMessage
 from langgraph.graph.message import REMOVE_ALL_MESSAGES
 from langchain_core.runnables import RunnableConfig
-
+from langsmith import traceable
 
 from backend.src.clients import get_asset_manager_client
 from backend.src.utils.tools.asset_manager_tools import ask_db_manager
@@ -83,7 +83,7 @@ class AssetManager:
         )
 
         return agent
-
+    
     def run_query(self, user_query : str):
         "a method to invoke the agent and execute the user query"
 
