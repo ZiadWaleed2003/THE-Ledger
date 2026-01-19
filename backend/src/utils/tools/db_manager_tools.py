@@ -5,9 +5,10 @@ from typing import Literal
 from backend.src.core.database import get_db
 from backend.src.services.assets_service import AssetService
 from backend.src.utils.logger import get_session_logger
+from backend.src.schemas.asset import AssetResponse
 
 
-db = get_db()
+db = next(get_db())
 
 # tools used by the DB manager
 
@@ -35,7 +36,9 @@ def search_assets_by_name_or_category(query:str):
     elif result is None:
         return "error with the DB, couldn't retrieve any data"
     else:
-        return result
+        asset = [AssetResponse.model_validate(asset).model_dump(mode='json') for asset in result]
+        logger.info(f"tool about to return {asset}") 
+        return asset
     
 
 @tool
@@ -50,9 +53,11 @@ def get_all_assets():
     result , error = asset_service.get_all_assets()
 
     if error:
+        logger.error("get all assets tools failed to retrieve anyting")
         return "No assets found in the DB"
     
-    return result
+    logger.info(f"tool call succeeded and got {result}")
+    return [AssetResponse.model_validate(asset).model_dump(mode='json') for asset in result]
 
 
 
@@ -104,21 +109,17 @@ def get_asset_value_statistics(metric: Literal["max", "min", "mean"]):
 
     logger.info("Asset statistics retrieved successfully")
 
+    # If the result is a DB model (max/min), serialize it. If it's a number (mean), keep it as is.
+    serialized_result = result
+    if metric in ["max", "min"]:
+         serialized_result = AssetResponse.model_validate(result).model_dump(mode='json')
+
     return {
         "metric": metric,
-        "result": result
+        "result": serialized_result
     }
 
     
-# tool used by the asset manager
-@tool
-def ask_db_manager(query:str):
-    """
-        Use this tool to ask the Database Manager questions about assets.
-        Pass the user's natural language query directly to this tool.
-        Example: "Find my most expensive laptop" or "Total value of assets".
-    """
 
-    return "macbook m1"
 
 

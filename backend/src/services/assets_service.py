@@ -141,7 +141,7 @@ class AssetService:
                 self.logger.warning("No Assets found in the DB")
                 return [] , None
             
-            self.logger.info(f"query : {query} returned smth")
+            self.logger.info(f"query : {query} returned smth {result}")
             return result , None
         except Exception as e:
             self.logger.error(f"DB error while querying it {e}")
