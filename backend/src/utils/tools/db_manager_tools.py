@@ -1,6 +1,6 @@
 from langchain_core.tools import tool
 from typing import Literal
-
+from langsmith import traceable
 
 from backend.src.core.database import get_db
 from backend.src.services.assets_service import AssetService
@@ -11,7 +11,6 @@ from backend.src.schemas.asset import AssetResponse
 db = next(get_db())
 
 # tools used by the DB manager
-
 @tool
 def search_assets_by_name_or_category(query:str):
     "" """

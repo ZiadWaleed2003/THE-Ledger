@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from langsmith import traceable
 
 from backend.src.agents.asset_manager import AssetManager
 from backend.src.utils.logger import get_session_logger
@@ -11,7 +12,9 @@ router = APIRouter()
 class ChatQuery(BaseModel):
     question: str
 
+
 @router.post("/query")
+@traceable
 def query_agent(query: ChatQuery):
     try:
         logger = get_session_logger()
