@@ -1,5 +1,4 @@
 dotenv==0.9.9
-langchain-nvidia-ai-endpoints==0.3.18
 langchain-cerebras
 langchain==1.2.3
 sqlalchemy==2.0.45
