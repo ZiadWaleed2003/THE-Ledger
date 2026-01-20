@@ -1,4 +1,0 @@
-2026-01-19 05:58:08,384 - INFO - [cd92efe0-1db8-4e97-9041-634d036a20da] - Agent used the get all assets tool
-2026-01-19 05:58:08,390 - INFO - [cd92efe0-1db8-4e97-9041-634d036a20da] - retrieving Assets from the DB
-2026-01-19 05:58:08,393 - INFO - [cd92efe0-1db8-4e97-9041-634d036a20da] - tool call succeeded and got [<backend.src.models.asset.Asset object at 0x751305060130>, <backend.src.models.asset.Asset object at 0x7513050601f0>, <backend.src.models.asset.Asset object at 0x751305060670>]
-2026-01-19 05:58:10,216 - INFO - [cd92efe0-1db8-4e97-9041-634d036a20da] - calling db agent to get db info
