@@ -1,4 +1,3 @@
-from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from langchain_cerebras import ChatCerebras
 from langchain_core.rate_limiters import InMemoryRateLimiter
 from functools import lru_cache
@@ -8,7 +7,7 @@ from backend.src.core.config import CONFIG
 
 # a model client to power the agent
 @lru_cache(maxsize=None)
-def get_nvidia_client()-> ChatNVIDIA:
+def get_nvidia_client()-> ChatCerebras:
 
     print("--- Initializing LLM Client LLama 3 ---")
 
