@@ -8,7 +8,6 @@ def load_environment() -> Dict[str, str]:
     
     required_vars = {
         'CEREBRAS_API_KEY' : 'Cerebas Api key',
-        'NVIDIA_API_KEY':'Nvidia NIM key',
         'LANGSMITH_TRACING': 'LangSmith tracing flag',
         'LANGSMITH_API_KEY': 'LangSmith API key',
         'LANGSMITH_PROJECT': 'LangSmith Project'

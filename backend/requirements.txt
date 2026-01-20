@@ -6,4 +6,6 @@ sqlalchemy==2.0.45
 pydantic
 fastapi==0.128.0
 uvicorn
+uvicorn[standard]
 langsmith
+websockets
